@@ -26,6 +26,21 @@ module helloworld(
     .lcd_data_o(lcd_data_o)
   );
 
+  reg [7:0] chars [0:11];
+  initial begin
+    chars[0]  = 8'b01001000;  // "H"
+    chars[1]  = 8'b01000101;  // "E"
+    chars[2]  = 8'b01001100;  // "L"
+    chars[3]  = 8'b01001100;  // "L"
+    chars[4]  = 8'b01001111;  // "O"
+    chars[5]  = 8'b00100000;  // " "
+    chars[6]  = 8'b01010111;  // "W"
+    chars[7]  = 8'b01001111;  // "O"
+    chars[8]  = 8'b01010010;  // "R"
+    chars[9]  = 8'b01001100;  // "L"
+    chars[10] = 8'b01000100;  // "D"
+  end
+
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // State machine for printing "HELLO WORLD"
   ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,7 +52,7 @@ module helloworld(
       0: begin  // write "H"
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b01001000;
+            data <= chars[0];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
@@ -59,7 +74,7 @@ module helloworld(
       1: begin  // write "E"
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b01000101;
+            data <= chars[1];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
@@ -81,7 +96,7 @@ module helloworld(
       2: begin  // write "L"
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b01001100;
+            data <= chars[2];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
@@ -103,7 +118,7 @@ module helloworld(
       3: begin  // write "L"
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b01001100;
+            data <= chars[3];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
@@ -125,7 +140,7 @@ module helloworld(
       4: begin  // write "O"
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b01001111;
+            data <= chars[4];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
@@ -147,7 +162,7 @@ module helloworld(
       5: begin  // write " "
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b00100000;
+            data <= chars[5];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
@@ -169,7 +184,7 @@ module helloworld(
       6: begin  // write "W"
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b01010111;
+            data <= chars[6];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
@@ -191,7 +206,7 @@ module helloworld(
       7: begin  // write "O"
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b01001111;
+            data <= chars[7];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
@@ -213,7 +228,7 @@ module helloworld(
       8: begin  // write "R"
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b01010010;
+            data <= chars[8];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
@@ -235,7 +250,7 @@ module helloworld(
       9: begin  // write "L"
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b01001100;
+            data <= chars[9];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
@@ -257,7 +272,7 @@ module helloworld(
       10: begin  // write "D"
         if (substate == 0) begin
           if (rdy) begin
-            data <= 8'b01000100;
+            data <= chars[10];
             ops <= 1;
             enb <= 1;
             substate <= substate + 1;
