@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://github.com/extra2000/vivado-lcd16x2-helloworld/compare/v1.0.0...v1.0.1) (2022-05-04)
+
+
+### Code Refactoring
+
+* **helloworld.v:** define "HELLO WORLD" into 8-bit array ([357f0b1](https://github.com/extra2000/vivado-lcd16x2-helloworld/commit/357f0b19c64e749434f8db1dd8c8737898411180))
+
 ## 1.0.0 (2022-05-02)
 
 
