@@ -2,7 +2,9 @@
 
 
 module helloworld #(
-  parameter [3:0] NUM_OF_CHARS = 11
+  parameter [4:0] NUM_OF_CHARS     = 16,
+  parameter [7:0] LCD_SETDDRAMADDR = 8'b10000000,
+  parameter [7:0] LCD_ROW_OFFSET   = 8'b01000000
 ) (
   input        clk_i,
   output       lcd_rs_o,
@@ -28,54 +30,141 @@ module helloworld #(
     .lcd_data_o(lcd_data_o)
   );
 
-  reg [7:0] chars [0:NUM_OF_CHARS];
+  reg [7:0] line_1_chars [0:NUM_OF_CHARS];
+  reg [7:0] line_2_chars [0:NUM_OF_CHARS];
   initial begin
-    chars[0]  = 8'b01001000;  // "H"
-    chars[1]  = 8'b01000101;  // "E"
-    chars[2]  = 8'b01001100;  // "L"
-    chars[3]  = 8'b01001100;  // "L"
-    chars[4]  = 8'b01001111;  // "O"
-    chars[5]  = 8'b00100000;  // " "
-    chars[6]  = 8'b01010111;  // "W"
-    chars[7]  = 8'b01001111;  // "O"
-    chars[8]  = 8'b01010010;  // "R"
-    chars[9]  = 8'b01001100;  // "L"
-    chars[10] = 8'b01000100;  // "D"
+    line_1_chars[ 0] = 8'b01001000;  // "H"
+    line_1_chars[ 1] = 8'b01001001;  // "I"
+    line_1_chars[ 2] = 8'b01010100;  // "T"
+    line_1_chars[ 3] = 8'b01000001;  // "A"
+    line_1_chars[ 4] = 8'b01000011;  // "C"
+    line_1_chars[ 5] = 8'b01001000;  // "H"
+    line_1_chars[ 6] = 8'b01001001;  // "I"
+    line_1_chars[ 7] = 8'b00100000;  // " "
+    line_1_chars[ 8] = 8'b00100000;  // " "
+    line_1_chars[ 9] = 8'b00100000;  // " "
+    line_1_chars[10] = 8'b00100000;  // " "
+    line_1_chars[11] = 8'b00100000;  // " "
+    line_1_chars[12] = 8'b00100000;  // " "
+    line_1_chars[13] = 8'b00100000;  // " "
+    line_1_chars[14] = 8'b00100000;  // " "
+    line_1_chars[15] = 8'b00100000;  // " "
+
+    line_2_chars[ 0] = 8'b11001011;  // "ヒ"
+    line_2_chars[ 1] = 8'b11000000;  // "タ"
+    line_2_chars[ 2] = 8'b11000001;  // "チ"
+    line_2_chars[ 3] = 8'b00100000;  // " "
+    line_2_chars[ 4] = 8'b00100000;  // " "
+    line_2_chars[ 5] = 8'b00100000;  // " "
+    line_2_chars[ 6] = 8'b00100000;  // " "
+    line_2_chars[ 7] = 8'b00100000;  // " "
+    line_2_chars[ 8] = 8'b00100000;  // " "
+    line_2_chars[ 9] = 8'b00100000;  // " "
+    line_2_chars[10] = 8'b00100000;  // " "
+    line_2_chars[11] = 8'b00100000;  // " "
+    line_2_chars[12] = 8'b00100000;  // " "
+    line_2_chars[13] = 8'b00100000;  // " "
+    line_2_chars[14] = 8'b00100000;  // " "
+    line_2_chars[15] = 8'b00100000;  // " "
   end
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
-  // State machine for printing "HELLO WORLD"
+  // State machine for printing "HITACHI\nヒタチ"
   ////////////////////////////////////////////////////////////////////////////////////////////////
   reg [3:0] state = 0;
-  reg [1:0] substate = 0;
+  reg [4:0] substate = 0;
+  reg [1:0] subsubstate = 0;
 
   always @(posedge clk_i) begin
-    if (state < NUM_OF_CHARS) begin
-      if (substate == 0) begin
+    case (state)
+      0: begin
+          if (substate < NUM_OF_CHARS) begin
+            if (subsubstate == 0) begin
+              if (rdy) begin
+                data <= line_1_chars[substate];
+                ops <= 1;
+                enb <= 1;
+                subsubstate <= subsubstate + 1;
+              end
+            end
+            if (subsubstate == 1) begin
+              if (!rdy) begin
+                subsubstate <= subsubstate + 1;
+                enb <= 0;
+              end
+            end
+            if (subsubstate == 2) begin
+              if (rdy) begin
+                substate <= substate + 1;
+                subsubstate <= 0;
+              end
+            end
+          end else begin
+            if (rdy) begin
+              state <= state + 1;
+              substate <= 0;
+              subsubstate <= 0;
+            end
+          end
+      end
+      1: begin  // newline
+        if (substate == 0) begin
+          if (rdy) begin
+            data <= LCD_SETDDRAMADDR | LCD_ROW_OFFSET;
+            ops <= 3;
+            enb <= 1;
+            substate <= substate + 1;
+          end
+        end
+        if (substate == 1) begin
+          if (!rdy) begin
+            substate <= substate + 1;
+            enb <= 0;
+          end
+        end
+        if (substate == 2) begin
+          if (rdy) begin
+            state <= state + 1;
+            substate <= 0;
+          end
+        end
+      end
+      2: begin
+          if (substate < NUM_OF_CHARS) begin
+            if (subsubstate == 0) begin
+              if (rdy) begin
+                data <= line_2_chars[substate];
+                ops <= 1;
+                enb <= 1;
+                subsubstate <= subsubstate + 1;
+              end
+            end
+            if (subsubstate == 1) begin
+              if (!rdy) begin
+                subsubstate <= subsubstate + 1;
+                enb <= 0;
+              end
+            end
+            if (subsubstate == 2) begin
+              if (rdy) begin
+                substate <= substate + 1;
+                subsubstate <= 0;
+              end
+            end
+          end else begin
+            if (rdy) begin
+              state <= state + 1;
+              substate <= 0;
+              subsubstate <= 0;
+            end
+          end
+      end
+      default: begin
         if (rdy) begin
-          data <= chars[state];
-          ops <= 1;
-          enb <= 1;
-          substate <= substate + 1;
+          enb <= 1'b0;
         end
       end
-      if (substate == 1) begin
-        if (!rdy) begin
-          substate <= substate + 1;
-          enb <= 0;
-        end
-      end
-      if (substate == 2) begin
-        if (rdy) begin
-          state <= state + 1;
-          substate <= 0;
-        end
-      end
-    end else begin
-      if (rdy) begin
-        enb <= 1'b0;
-      end
-    end
+    endcase
   end
 
 endmodule
