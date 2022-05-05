@@ -689,8 +689,8 @@ module lcd16x2 #(
         if ((enb_i == 1) && (rst_i == 0)) begin
           case (ops_i)
             0: state <= state;  // idle
-            1: state <= 9;  // write character
-            2: state <= 0;  // reset
+            1: state <= 9;      // write character
+            2: state <= 0;      // reset
             3: state <= 10;     // write instruction
           endcase
         end
