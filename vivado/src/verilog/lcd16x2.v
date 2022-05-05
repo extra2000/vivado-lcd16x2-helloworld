@@ -617,6 +617,70 @@ module lcd16x2 #(
           end
         end
       end
+      ////////////////////////
+      // Write instructions //
+      ////////////////////////
+      10: begin
+        if (substate == 0) begin
+          rdy_o <= 0;
+          lcd_e_o <= 1;
+          lcd_rs_o <= 0;
+          if (!flag_40_ns) begin
+            flag_rst <= 0;
+          end else begin
+            flag_rst <= 1;
+            substate <= substate + 1;
+          end
+        end
+        if (substate == 1) begin
+          if (flag_rst && cnt_timer == 0) begin
+            substate <= substate + 1;
+          end
+        end
+        if (substate == 2) begin
+          lcd_data_o <= data_i;
+          if (!flag_250_ns) begin
+            flag_rst <= 0;
+          end else begin
+            flag_rst <= 1;
+            substate <= substate + 1;
+          end
+        end
+        if (substate == 3) begin
+          if (flag_rst && cnt_timer == 0) begin
+            substate <= substate + 1;
+          end
+        end
+        if (substate == 4) begin
+          lcd_e_o <= 0;
+          if (!flag_42_us) begin
+            flag_rst <= 0;
+          end else begin
+            flag_rst <= 1;
+            substate <= substate + 1;
+          end
+        end
+        if (substate == 5) begin
+          if (flag_rst && cnt_timer == 0) begin
+            substate <= substate + 1;
+          end
+        end
+        if (substate == 6) begin
+          rdy_o <= 1;
+          if (!flag_42_us) begin
+            flag_rst <= 0;
+          end else begin
+            flag_rst <= 1;
+            substate <= substate + 1;
+          end
+        end
+        if (substate == 7) begin
+          if (flag_rst && cnt_timer == 0) begin
+            state <= -1;
+            substate <= 0;
+          end
+        end
+      end
       ///////////////////////////////////////////////////////
       // The idle state. Do nothing until operation is set //
       ///////////////////////////////////////////////////////
@@ -627,6 +691,7 @@ module lcd16x2 #(
             0: state <= state;  // idle
             1: state <= 9;  // write character
             2: state <= 0;  // reset
+            3: state <= 10;     // write instruction
           endcase
         end
         if (rst_i == 1) begin
