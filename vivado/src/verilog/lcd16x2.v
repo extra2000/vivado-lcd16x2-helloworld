@@ -548,7 +548,7 @@ module lcd16x2 #(
         end
         if (substate == 5) begin
           if (flag_rst && cnt_timer == 0) begin
-            state <= 15;
+            state <= -1;
             substate <= 0;
           end
         end
@@ -612,7 +612,7 @@ module lcd16x2 #(
         end
         if (substate == 7) begin
           if (flag_rst && cnt_timer == 0) begin
-            state <= 15;
+            state <= -1;
             substate <= 0;
           end
         end
