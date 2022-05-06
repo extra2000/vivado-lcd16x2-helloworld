@@ -18,7 +18,7 @@ module helloworld #(
   reg        rst  = 1'b0;
   wire       rdy;
 
-  lcd16x2 lcd16x2_i(
+  lcd16x2 lcd16x2_inst(
     .clk_i(clk_i),
     .data_i(data),
     .ops_i(ops),
