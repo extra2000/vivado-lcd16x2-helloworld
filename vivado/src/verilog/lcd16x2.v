@@ -33,7 +33,7 @@ module lcd16x2 #(
   output reg       rdy_o,      // indicate whether this module is idle
   output reg       lcd_rs_o,
   output reg       lcd_e_o,
-  output reg [7:0] lcd_data_o  // data bus
+  output reg [7:0] lcd_databus_o  // data bus
 );
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -148,7 +148,7 @@ module lcd16x2 #(
           end
         end
         if (substate == 2) begin
-          lcd_data_o <= 8'b00110000;  // triggering function set
+          lcd_databus_o <= 8'b00110000;  // triggering function set
           if (!flag_250_ns) begin
             flag_rst <= 0;
           end else begin
@@ -280,7 +280,7 @@ module lcd16x2 #(
           end
         end
         if (substate == 2) begin
-          lcd_data_o <= CMD_SETUP;
+          lcd_databus_o <= CMD_SETUP;
           if(!flag_250_ns) begin
             flag_rst <= 0;
           end else begin
@@ -329,7 +329,7 @@ module lcd16x2 #(
           end
         end
         if (substate == 2) begin
-          lcd_data_o <= CMD_DISP_OFF;
+          lcd_databus_o <= CMD_DISP_OFF;
           if (!flag_250_ns) begin
             flag_rst <= 0;
           end else begin
@@ -378,7 +378,7 @@ module lcd16x2 #(
           end
         end
         if (substate == 2) begin
-          lcd_data_o <= CMD_CLEAR;
+          lcd_databus_o <= CMD_CLEAR;
           if (!flag_250_ns) begin
             flag_rst <= 0;
           end else begin
@@ -427,7 +427,7 @@ module lcd16x2 #(
           end
         end
         if (substate == 2) begin
-          lcd_data_o <= CMD_ENTRY_N;
+          lcd_databus_o <= CMD_ENTRY_N;
           if (!flag_250_ns) begin
             flag_rst <= 0;
           end else begin
@@ -476,7 +476,7 @@ module lcd16x2 #(
           end
         end
         if (substate == 2) begin
-          lcd_data_o <= CMD_DISP_ON;
+          lcd_databus_o <= CMD_DISP_ON;
           if (!flag_250_ns) begin
             flag_rst <= 0;
           end else begin
@@ -526,7 +526,7 @@ module lcd16x2 #(
           end
         end
         if (substate == 2) begin
-          lcd_data_o <= data_i;
+          lcd_databus_o <= data_i;
           if (!flag_250_ns) begin
             flag_rst <= 0;
           end else begin
@@ -590,7 +590,7 @@ module lcd16x2 #(
           end
         end
         if (substate == 2) begin
-          lcd_data_o <= data_i;
+          lcd_databus_o <= data_i;
           if (!flag_250_ns) begin
             flag_rst <= 0;
           end else begin

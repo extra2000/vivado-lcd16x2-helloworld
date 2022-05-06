@@ -9,7 +9,7 @@ module helloworld #(
   input        clk_i,
   output       lcd_rs_o,
   output       lcd_e_o,
-  output [7:0] lcd_data_o
+  output [7:0] lcd_databus_o
 );
 
   reg  [7:0] data = 8'b00000000;
@@ -27,7 +27,7 @@ module helloworld #(
     .rdy_o(rdy),
     .lcd_rs_o(lcd_rs_o),
     .lcd_e_o(lcd_e_o),
-    .lcd_data_o(lcd_data_o)
+    .lcd_databus_o(lcd_databus_o)
   );
 
   reg [7:0] line_1_chars [0:NUM_OF_CHARS];

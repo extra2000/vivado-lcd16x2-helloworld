@@ -323,7 +323,7 @@ proc cr_bd_arty_z7_20 { parentCell } {
 
 
   # Create ports
-  set lcd_data [ create_bd_port -dir O -from 7 -to 0 lcd_data ]
+  set lcd_databus [ create_bd_port -dir O -from 7 -to 0 lcd_databus ]
   set lcd_e [ create_bd_port -dir O lcd_e ]
   set lcd_rs [ create_bd_port -dir O lcd_rs ]
   set sys_clock [ create_bd_port -dir I -type clk -freq_hz 125000000 sys_clock ]
@@ -1139,7 +1139,7 @@ gpio[0]#qspi0_ss_b#qspi0_io[0]#qspi0_io[1]#qspi0_io[2]#qspi0_io[3]/HOLD_B#qspi0_
 
   # Create port connections
   connect_bd_net -net clock_generator_8mhz_0_clk_o [get_bd_pins clock_generator_8mhz_0/clk_o] [get_bd_pins helloworld_0/clk_i]
-  connect_bd_net -net helloworld_0_lcd_data_o [get_bd_ports lcd_data] [get_bd_pins helloworld_0/lcd_data_o]
+  connect_bd_net -net helloworld_0_lcd_databus_o [get_bd_ports lcd_databus] [get_bd_pins helloworld_0/lcd_databus_o]
   connect_bd_net -net helloworld_0_lcd_e_o [get_bd_ports lcd_e] [get_bd_pins helloworld_0/lcd_e_o]
   connect_bd_net -net helloworld_0_lcd_rs_o [get_bd_ports lcd_rs] [get_bd_pins helloworld_0/lcd_rs_o]
   connect_bd_net -net sys_clock_1 [get_bd_ports sys_clock] [get_bd_pins clock_generator_8mhz_0/clk_i] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK]

@@ -56,9 +56,9 @@
       <obj_property name="ElementShortName">lcd_e_o</obj_property>
       <obj_property name="ObjectShortName">lcd_e_o</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/helloworld_tb/UUT/lcd16x2_i/lcd_data_o">
-      <obj_property name="ElementShortName">lcd_data_o[7:0]</obj_property>
-      <obj_property name="ObjectShortName">lcd_data_o[7:0]</obj_property>
+   <wvobject type="array" fp_name="/helloworld_tb/UUT/lcd16x2_i/lcd_databus_o">
+      <obj_property name="ElementShortName">lcd_databus_o[7:0]</obj_property>
+      <obj_property name="ObjectShortName">lcd_databus_o[7:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/helloworld_tb/UUT/lcd16x2_i/state">
       <obj_property name="ElementShortName">state[3:0]</obj_property>

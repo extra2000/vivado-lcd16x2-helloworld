@@ -18,7 +18,7 @@ module helloworld_tb;
     .clk_i(clk),
     .lcd_rs_o(lcd_rs),
     .lcd_e_o(lcd_e),
-    .lcd_data_o(lcd_data)
+    .lcd_databus_o(lcd_data)
   );
 
   // Delaying 125ns before inverting r_clock to simulate 8MHz clock.
