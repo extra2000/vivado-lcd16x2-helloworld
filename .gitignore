@@ -5,3 +5,6 @@ petalinux/*
 
 vivado/run/*
 !vivado/run/.gitkeep
+
+vivado/src/constrs/*
+!vivado/src/constrs/*.example
