@@ -1,5 +1,18 @@
 # Changelog
 
+### [2.0.1](https://github.com/extra2000/vivado-lcd16x2-helloworld/compare/v2.0.0...v2.0.1) (2022-05-06)
+
+
+### Maintenance
+
+* **lfs:** add LFS ([587761f](https://github.com/extra2000/vivado-lcd16x2-helloworld/commit/587761fd9dcfd319af9e3fd1de873290556ae07d))
+
+
+### Documentations
+
+* add schematic diagram ([5147953](https://github.com/extra2000/vivado-lcd16x2-helloworld/commit/5147953da9bda380b8125a074da4c88a92356d37))
+* **README:** add Git LFS requirement ([3458c9a](https://github.com/extra2000/vivado-lcd16x2-helloworld/commit/3458c9a02b7eabc569f57b8346ebf86d8236bad2))
+
 ## [2.0.0](https://github.com/extra2000/vivado-lcd16x2-helloworld/compare/v1.1.0...v2.0.0) (2022-05-06)
 
 
