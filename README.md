@@ -24,7 +24,12 @@ cd vivado-lcd16x2-helloworld
 
 ## Creating Vivado Project
 
-From the project root directory, execute the following command:
+From the project root directory, create contraint file using the following command:
+```
+cp -v vivado/src/constrs/artyz7-20.xdc{.example,}
+```
+
+Create project:
 ```
 cd vivado/run/
 flatpak run com.github.corna.Vivado -mode batch -source ../script/create_prj.tcl -notrace -tclargs --project_name lcd16x2-helloworld
