@@ -74,3 +74,10 @@ podman unshare chown -R 0:0 ./petalinux/
 ```
 
 Create SD card image.
+
+
+## Diagrams
+
+Schematic:
+
+![schematics](docs/schematic.png)
