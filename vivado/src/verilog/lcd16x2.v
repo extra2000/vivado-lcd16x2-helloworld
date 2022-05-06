@@ -11,19 +11,11 @@ module lcd16x2 #(
   parameter integer CLK_FREQ      = 8000000,   // 8MHz
   // Timing cycles
   parameter [19:0]  T_40_NS       = $ceil(0.000000040 * CLK_FREQ),
-  parameter [19:0]  T_50_NS       = $ceil(0.000000050 * CLK_FREQ),
   parameter [19:0]  T_250_NS      = $ceil(0.000000250 * CLK_FREQ),
-  parameter [19:0]  T_40_US       = $ceil(0.000040000 * CLK_FREQ),
   parameter [19:0]  T_42_US       = $ceil(0.000042000 * CLK_FREQ),
   parameter [19:0]  T_60_US       = $ceil(0.000060000 * CLK_FREQ),
   parameter [19:0]  T_100_US      = $ceil(0.000100000 * CLK_FREQ),
-  parameter [19:0]  T_200_US      = $ceil(0.000200000 * CLK_FREQ),
-  parameter [19:0]  T_1640_US     = $ceil(0.001640000 * CLK_FREQ),
-  parameter [19:0]  T_2000_US     = $ceil(0.002000000 * CLK_FREQ),
-  parameter [19:0]  T_4100_US     = $ceil(0.004100000 * CLK_FREQ),
   parameter [19:0]  T_5000_US     = $ceil(0.005000000 * CLK_FREQ),
-  parameter [19:0]  T_15000_US    = $ceil(0.015000000 * CLK_FREQ),
-  parameter [19:0]  T_55000_US    = $ceil(0.055000000 * CLK_FREQ),
   parameter [19:0]  T_100_MS      = $ceil(0.100000000 * CLK_FREQ),
   // Commands
   parameter [7:0]   CMD_SETUP     = 8'b00111000,  // Set 8-bit, 2-line, 5x7 dots
@@ -31,12 +23,7 @@ module lcd16x2 #(
   parameter [7:0]   CMD_ALL_ON    = 8'b00001111,  // Turn ON all display
   parameter [7:0]   CMD_DISP_OFF  = 8'b00001000,  // Turn OFF display
   parameter [7:0]   CMD_CLEAR     = 8'b00000001,  // Clear display
-  parameter [7:0]   CMD_ENTRY_N   = 8'b00000110,  // Normal entry
-  parameter [7:0]   CMD_HOME      = 8'b00000010,  // Return home
-  parameter [7:0]   CMD_C_SHIFT_L = 8'b00010000,  // Cursor shift left
-  parameter [7:0]   CMD_C_SHIFT_R = 8'b00010100,  // Cursor shift right
-  parameter [7:0]   CMD_D_SHIFT_L = 8'b00011000,  // Display shift left
-  parameter [7:0]   CMD_D_SHIFT_R = 8'b00011100   // Display shift right
+  parameter [7:0]   CMD_ENTRY_N   = 8'b00000110   // Normal entry
 ) (
   input            clk_i,
   input      [7:0] data_i,     // 8-bit data input
@@ -54,50 +41,30 @@ module lcd16x2 #(
   ////////////////////////////////////////////////////////////////////////////////////////////////
   reg [19:0] cnt_timer     = 0;
   reg        flag_40_ns    = 0;
-  reg        flag_50_ns    = 0;
   reg        flag_250_ns   = 0;
-  reg        flag_40_us    = 0;
   reg        flag_42_us    = 0;
   reg        flag_60_us    = 0;
   reg        flag_100_us   = 0;
-  reg        flag_1640_us  = 0;
-  reg        flag_2000_us  = 0;
-  reg        flag_4100_us  = 0;
   reg        flag_5000_us  = 0;
-  reg        flag_15000_us = 0;
-  reg        flag_55000_us = 0;
   reg        flag_100_ms   = 0;
   reg        flag_rst      = 1;  // start with RST flag set, so the counting can't be started
 
   always @(posedge clk_i) begin
     if (flag_rst) begin
       flag_40_ns    <= 0;
-      flag_50_ns    <= 0;
       flag_250_ns   <= 0;
-      flag_40_us    <= 0;
       flag_42_us    <= 0;
       flag_60_us    <= 0;
       flag_100_us   <= 0;
-      flag_1640_us  <= 0;
-      flag_2000_us  <= 0;
-      flag_4100_us  <= 0;
       flag_5000_us  <= 0;
-      flag_15000_us <= 0;
-      flag_55000_us <= 0;
       flag_100_ms   <= 0;
       cnt_timer     <= 0;
     end else begin
       if (cnt_timer >= T_40_NS) begin
         flag_40_ns <= 1;
       end
-      if (cnt_timer >= T_50_NS) begin
-        flag_50_ns <= 1;
-      end
       if (cnt_timer >= T_250_NS) begin
         flag_250_ns <= 1;
-      end
-      if (cnt_timer >= T_40_US) begin
-        flag_40_us <= 1;
       end
       if (cnt_timer >= T_42_US) begin
         flag_42_us <= 1;
@@ -108,23 +75,8 @@ module lcd16x2 #(
       if (cnt_timer >= T_100_US) begin
         flag_100_us <= 1;
       end
-      if (cnt_timer >= T_1640_US) begin
-        flag_1640_us <= 1;
-      end
-      if (cnt_timer >= T_2000_US) begin
-        flag_2000_us <= 1;
-      end
-      if (cnt_timer >= T_4100_US) begin
-        flag_4100_us <= 1;
-      end
       if (cnt_timer >= T_5000_US) begin
         flag_5000_us <= 1;
-      end
-      if (cnt_timer >= T_15000_US) begin
-        flag_15000_us <= 1;
-      end
-      if (cnt_timer >= T_55000_US) begin
-        flag_55000_us <= 1;
       end
       if (cnt_timer >= T_100_MS) begin
         flag_100_ms <= 1;
