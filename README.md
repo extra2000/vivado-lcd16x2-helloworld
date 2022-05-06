@@ -9,6 +9,7 @@ Simple LCD16x2 example.
 
 ## Preprequisites
 
+* Git LFS.
 * Target board: `digilentinc.com:arty-z7-20:part0:1.1`.
 * Vivado 2021.2 and above.
 
