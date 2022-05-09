@@ -8,21 +8,21 @@
 
 
 module helloworld #(
-  parameter [4:0] NUM_OF_CHARS     = 16,
+  parameter [4:0] NUM_OF_CHARS = 16,
   parameter [7:0] LCD_SETDDRAMADDR = 8'b10000000,
-  parameter [7:0] LCD_ROW_OFFSET   = 8'b01000000
+  parameter [7:0] LCD_ROW_OFFSET = 8'b01000000
 ) (
-  input        clk_i,
-  output       lcd_rs_o,
-  output       lcd_e_o,
+  input clk_i,
+  output lcd_rs_o,
+  output lcd_e_o,
   output [7:0] lcd_databus_o
 );
 
-  reg  [7:0] data = 8'b00000000;
-  reg  [1:0] ops  = 2'b00;
-  reg        enb  = 1'b0;
-  reg        rst  = 1'b0;
-  wire       rdy;
+  reg [7:0] data = 8'b00000000;
+  reg [1:0] ops = 2'b00;
+  reg enb = 1'b0;
+  reg rst = 1'b0;
+  wire rdy;
 
   lcd16x2 lcd16x2_inst(
     .clk_i(clk_i),

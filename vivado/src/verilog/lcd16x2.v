@@ -8,57 +8,57 @@
 
 
 module lcd16x2 #(
-  parameter [31:0] CLK_FREQ       = 125000000,   // 125MHz
+  parameter [31:0] CLK_FREQ = 125000000,  // 125MHz
   // Timing cycles
-  parameter [31:0]  T_40_NS       = $ceil(0.000000040 * CLK_FREQ),
-  parameter [31:0]  T_250_NS      = $ceil(0.000000250 * CLK_FREQ),
-  parameter [31:0]  T_42_US       = $ceil(0.000042000 * CLK_FREQ),
-  parameter [31:0]  T_60_US       = $ceil(0.000060000 * CLK_FREQ),
-  parameter [31:0]  T_100_US      = $ceil(0.000100000 * CLK_FREQ),
-  parameter [31:0]  T_5000_US     = $ceil(0.005000000 * CLK_FREQ),
-  parameter [31:0]  T_60_MS       = $ceil(0.060000000 * CLK_FREQ),
+  parameter [31:0] T_40_NS = $ceil(0.000000040 * CLK_FREQ),
+  parameter [31:0] T_250_NS = $ceil(0.000000250 * CLK_FREQ),
+  parameter [31:0] T_42_US = $ceil(0.000042000 * CLK_FREQ),
+  parameter [31:0] T_60_US = $ceil(0.000060000 * CLK_FREQ),
+  parameter [31:0] T_100_US = $ceil(0.000100000 * CLK_FREQ),
+  parameter [31:0] T_5000_US = $ceil(0.005000000 * CLK_FREQ),
+  parameter [31:0] T_60_MS = $ceil(0.060000000 * CLK_FREQ),
   // Commands
-  parameter [7:0]   CMD_SETUP     = 8'b00111000,  // Set 8-bit, 2-line, 5x7 dots
-  parameter [7:0]   CMD_DISP_ON   = 8'b00001100,  // Turn ON display
-  parameter [7:0]   CMD_ALL_ON    = 8'b00001111,  // Turn ON all display
-  parameter [7:0]   CMD_DISP_OFF  = 8'b00001000,  // Turn OFF display
-  parameter [7:0]   CMD_CLEAR     = 8'b00000001,  // Clear display
-  parameter [7:0]   CMD_ENTRY_N   = 8'b00000110   // Normal entry
+  parameter [7:0] CMD_SETUP = 8'b00111000,  // Set 8-bit, 2-line, 5x7 dots
+  parameter [7:0] CMD_DISP_ON = 8'b00001100,  // Turn ON display
+  parameter [7:0] CMD_ALL_ON = 8'b00001111,  // Turn ON all display
+  parameter [7:0] CMD_DISP_OFF = 8'b00001000,  // Turn OFF display
+  parameter [7:0] CMD_CLEAR = 8'b00000001,  // Clear display
+  parameter [7:0] CMD_ENTRY_N = 8'b00000110  // Normal entry
 ) (
-  input            clk_i,
-  input      [7:0] data_i,     // 8-bit data input
-  input      [1:0] ops_i,      // operation mode
-  input            enb_i,      // tells this module that the data is valid
-  input            rst_i,
-  output reg       rdy_o,      // indicate whether this module is idle
-  output reg       lcd_rs_o,
-  output reg       lcd_e_o,
+  input clk_i,
+  input [7:0] data_i,  // 8-bit data input
+  input [1:0] ops_i,  // operation mode
+  input enb_i,  // tells this module that the data is valid
+  input rst_i,
+  output reg rdy_o,  // indicate whether this module is idle
+  output reg lcd_rs_o,
+  output reg lcd_e_o,
   output reg [7:0] lcd_databus_o  // data bus
 );
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Counting mechanism
   ////////////////////////////////////////////////////////////////////////////////////////////////
-  reg [31:0] cnt_timer     = 0;
-  reg        flag_40_ns    = 0;
-  reg        flag_250_ns   = 0;
-  reg        flag_42_us    = 0;
-  reg        flag_60_us    = 0;
-  reg        flag_100_us   = 0;
-  reg        flag_5000_us  = 0;
-  reg        flag_60_ms    = 0;
-  reg        flag_rst      = 1;  // start with RST flag set, so the counting can't be started
+  reg [31:0] cnt_timer = 0;
+  reg flag_40_ns = 0;
+  reg flag_250_ns = 0;
+  reg flag_42_us = 0;
+  reg flag_60_us = 0;
+  reg flag_100_us = 0;
+  reg flag_5000_us = 0;
+  reg flag_60_ms = 0;
+  reg flag_rst = 1;  // start with RST flag set, so the counting can't be started
 
   always @(posedge clk_i) begin
     if (flag_rst) begin
-      flag_40_ns    <= 0;
-      flag_250_ns   <= 0;
-      flag_42_us    <= 0;
-      flag_60_us    <= 0;
-      flag_100_us   <= 0;
-      flag_5000_us  <= 0;
-      flag_60_ms    <= 0;
-      cnt_timer     <= 0;
+      flag_40_ns <= 0;
+      flag_250_ns <= 0;
+      flag_42_us <= 0;
+      flag_60_us <= 0;
+      flag_100_us <= 0;
+      flag_5000_us <= 0;
+      flag_60_ms <= 0;
+      cnt_timer <= 0;
     end else begin
       if (cnt_timer >= T_40_NS) begin
         flag_40_ns <= 1;
@@ -88,7 +88,7 @@ module lcd16x2 #(
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // State machine
   ////////////////////////////////////////////////////////////////////////////////////////////////
-  reg [3:0] state    = 0;
+  reg [3:0] state = 0;
   reg [3:0] substate = 0;
 
   always @(posedge clk_i) begin

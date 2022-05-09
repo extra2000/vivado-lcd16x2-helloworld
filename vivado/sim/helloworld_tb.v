@@ -12,9 +12,9 @@ module helloworld_tb #(
   parameter reg [2:0] T_DELAY_4_NS = 4
 ) ();
 
-  reg        sysclock = 1'b0;
-  wire       lcd_rs;
-  wire       lcd_e;
+  reg sysclock = 1'b0;
+  wire lcd_rs;
+  wire lcd_e;
   wire [7:0] lcd_data;
 
   helloworld UUT(
