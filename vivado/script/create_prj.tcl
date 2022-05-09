@@ -4,10 +4,8 @@ proc checkRequiredFiles { origin_dir} {
   set files [list \
  "[file normalize "$origin_dir/../src/verilog/lcd16x2.v"]"\
  "[file normalize "$origin_dir/../src/verilog/helloworld.v"]"\
- "[file normalize "$origin_dir/../src/verilog/clock_generator_8mhz.v"]"\
  "[file normalize "$origin_dir/../src/constrs/artyz7-20.xdc"]"\
  "[file normalize "$origin_dir/../sim/helloworld_tb.v"]"\
- "[file normalize "$origin_dir/../sim/clock_generator_8mhz_tb.v"]"\
  "[file normalize "$origin_dir/../sim/lcd16x2_tb_behav.wcfg"]"\
   ]
   foreach ifile $files {
@@ -121,9 +119,8 @@ set_property -name "webtalk.modelsim_export_sim" -value "25" -objects $obj
 set_property -name "webtalk.questa_export_sim" -value "25" -objects $obj
 set_property -name "webtalk.riviera_export_sim" -value "25" -objects $obj
 set_property -name "webtalk.vcs_export_sim" -value "25" -objects $obj
-set_property -name "webtalk.xcelium_export_sim" -value "6" -objects $obj
 set_property -name "webtalk.xsim_export_sim" -value "25" -objects $obj
-set_property -name "webtalk.xsim_launch_sim" -value "98" -objects $obj
+set_property -name "webtalk.xsim_launch_sim" -value "99" -objects $obj
 
 # Create 'sources_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sources_1] ""]} {
@@ -135,7 +132,6 @@ set obj [get_filesets sources_1]
 set files [list \
  [file normalize "${origin_dir}/../src/verilog/lcd16x2.v"] \
  [file normalize "${origin_dir}/../src/verilog/helloworld.v"] \
- [file normalize "${origin_dir}/../src/verilog/clock_generator_8mhz.v"] \
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -148,6 +144,7 @@ add_files -norecurse -fileset $obj $files
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
 set_property -name "top" -value "arty_z7_20_wrapper" -objects $obj
+set_property -name "top_auto_set" -value "0" -objects $obj
 
 # Create 'constrs_1' fileset (if not found)
 if {[string equal [get_filesets -quiet constrs_1] ""]} {
@@ -179,7 +176,6 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 set obj [get_filesets sim_1]
 set files [list \
  [file normalize "${origin_dir}/../sim/helloworld_tb.v"] \
- [file normalize "${origin_dir}/../sim/clock_generator_8mhz_tb.v"] \
  [file normalize "${origin_dir}/../sim/lcd16x2_tb_behav.wcfg"] \
 ]
 add_files -norecurse -fileset $obj $files
@@ -211,16 +207,13 @@ if { [get_files lcd16x2.v] == "" } {
 if { [get_files helloworld.v] == "" } {
   import_files -quiet -fileset sources_1 "${origin_dir}/../src/verilog/helloworld.v"
 }
-if { [get_files clock_generator_8mhz.v] == "" } {
-  import_files -quiet -fileset sources_1 "${origin_dir}/../src/verilog/clock_generator_8mhz.v"
-}
 
 
 # Proc to create BD arty_z7_20
 proc cr_bd_arty_z7_20 { parentCell } {
 # The design that will be created by this Tcl proc contains the following
 # module references:
-# clock_generator_8mhz, helloworld
+# helloworld
 
 
 
@@ -264,7 +257,6 @@ proc cr_bd_arty_z7_20 { parentCell } {
   set bCheckModules 1
   if { $bCheckModules == 1 } {
      set list_check_mods "\
-  clock_generator_8mhz\
   helloworld\
   "
 
@@ -330,17 +322,6 @@ proc cr_bd_arty_z7_20 { parentCell } {
   set_property -dict [ list \
    CONFIG.PHASE {0.0} \
  ] $sys_clock
-
-  # Create instance: clock_generator_8mhz_0, and set properties
-  set block_name clock_generator_8mhz
-  set block_cell_name clock_generator_8mhz_0
-  if { [catch {set clock_generator_8mhz_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $clock_generator_8mhz_0 eq "" } {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
 
   # Create instance: helloworld_0, and set properties
   set block_name helloworld
@@ -1138,11 +1119,10 @@ gpio[0]#qspi0_ss_b#qspi0_io[0]#qspi0_io[1]#qspi0_io[2]#qspi0_io[3]/HOLD_B#qspi0_
   connect_bd_intf_net -intf_net processing_system7_0_FIXED_IO [get_bd_intf_ports FIXED_IO] [get_bd_intf_pins processing_system7_0/FIXED_IO]
 
   # Create port connections
-  connect_bd_net -net clock_generator_8mhz_0_clk_o [get_bd_pins clock_generator_8mhz_0/clk_o] [get_bd_pins helloworld_0/clk_i]
   connect_bd_net -net helloworld_0_lcd_databus_o [get_bd_ports lcd_databus] [get_bd_pins helloworld_0/lcd_databus_o]
   connect_bd_net -net helloworld_0_lcd_e_o [get_bd_ports lcd_e] [get_bd_pins helloworld_0/lcd_e_o]
   connect_bd_net -net helloworld_0_lcd_rs_o [get_bd_ports lcd_rs] [get_bd_pins helloworld_0/lcd_rs_o]
-  connect_bd_net -net sys_clock_1 [get_bd_ports sys_clock] [get_bd_pins clock_generator_8mhz_0/clk_i] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK]
+  connect_bd_net -net sys_clock_1 [get_bd_ports sys_clock] [get_bd_pins helloworld_0/clk_i] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK]
 
   # Create address segments
 
@@ -1150,8 +1130,9 @@ gpio[0]#qspi0_ss_b#qspi0_io[0]#qspi0_io[1]#qspi0_io[2]#qspi0_io[3]/HOLD_B#qspi0_
   # Restore current instance
   current_bd_instance $oldCurInst
 
-  validate_bd_design
   save_bd_design
+common::send_gid_msg -ssname BD::TCL -id 2050 -severity "WARNING" "This Tcl script was generated from a block design that has not been validated. It is possible that design <$design_name> may result in errors during validation."
+
   close_bd_design $design_name
 }
 # End of cr_bd_arty_z7_20()
