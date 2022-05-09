@@ -1,5 +1,28 @@
 # Changelog
 
+## [3.0.0](https://github.com/extra2000/vivado-lcd16x2-helloworld/compare/v2.0.1...v3.0.0) (2022-05-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* 8MHz clock generator has been removed
+
+### Performance Improvements
+
+* **timing:** improve timing ([c5e1c9a](https://github.com/extra2000/vivado-lcd16x2-helloworld/commit/c5e1c9a356cc05f42952b11ab58edb4e6a5b4534))
+
+
+### Styles
+
+* remove spacing alignment ([8d1e12a](https://github.com/extra2000/vivado-lcd16x2-helloworld/commit/8d1e12a8b5057d99249a55826d26767889387ce5))
+
+
+### Code Refactoring
+
+* remove 8MHz clock generator ([06e191d](https://github.com/extra2000/vivado-lcd16x2-helloworld/commit/06e191db37e39fb062202a5f3f2ac419683df419))
+* **tcl:** recreate project with 8MHz clock generator removed ([12c4c7a](https://github.com/extra2000/vivado-lcd16x2-helloworld/commit/12c4c7ac357abc8c3d04af4f74ca241e2c9793a6))
+* **timing:** change input clock from 8MHz to 125MHz ([fdeeeb4](https://github.com/extra2000/vivado-lcd16x2-helloworld/commit/fdeeeb457926119f9f19e95f4da35aa416bd25e9))
+
 ### [2.0.1](https://github.com/extra2000/vivado-lcd16x2-helloworld/compare/v2.0.0...v2.0.1) (2022-05-06)
 
 
