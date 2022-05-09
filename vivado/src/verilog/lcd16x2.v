@@ -8,7 +8,7 @@
 
 
 module lcd16x2 #(
-  parameter integer CLK_FREQ      = 8000000,   // 8MHz
+  parameter [31:0] CLK_FREQ       = 125000000,   // 125MHz
   // Timing cycles
   parameter [19:0]  T_40_NS       = $ceil(0.000000040 * CLK_FREQ),
   parameter [19:0]  T_250_NS      = $ceil(0.000000250 * CLK_FREQ),
